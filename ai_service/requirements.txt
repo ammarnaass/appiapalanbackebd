@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+python-multipart
+numpy
+pillow
+# tensorflow-cpu or tflite-runtime would be here in a real production env
