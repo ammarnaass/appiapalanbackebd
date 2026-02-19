@@ -5,6 +5,7 @@ from pydantic import UUID4
 
 from app import crud, schemas
 from app.api import deps
+from app.core import llm
 
 router = APIRouter()
 
@@ -66,3 +67,37 @@ def delete_ai_provider(
         raise HTTPException(status_code=404, detail="AI provider not found")
     provider = crud.crud_ai.ai_provider.remove(db, id=id)
     return provider
+
+@router.post("/analyze-image")
+async def analyze_plant_image(
+    *,
+    db: Session = Depends(deps.get_db),
+    file: UploadFile = File(...),
+    prompt: Optional[str] = "قم بتحليل هذه الصورة لنبات مصاب، اشرح نوع المرض، الأعراض الظاهرة، وقدم نصائح دقيقة للعلاج باللغة العربية.",
+    current_user: Any = Depends(deps.get_current_active_user),
+) -> Any:
+    """
+    Analyze plant image using the currently active LLM provider.
+    This provides a more detailed and natural language analysis than the basic classifier.
+    """
+    # 1. Get Active Provider
+    provider = crud.crud_ai.ai_provider.get_active(db)
+    if not provider:
+        raise HTTPException(
+            status_code=404, 
+            detail="No active AI provider configured. Please add one in settings."
+        )
+
+    # 2. Read Image Data
+    image_data = await file.read()
+
+    # 3. Call LLM Vision Utility
+    try:
+        result = await llm.analyze_image_with_llm(
+            provider=provider,
+            image_data=image_data,
+            prompt=prompt
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"LLM Analysis Error: {str(e)}")

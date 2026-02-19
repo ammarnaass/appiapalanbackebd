@@ -50,6 +50,13 @@ The API uses **OAuth2 with Password Grant** and **JWT Tokens**.
   - `file`: (The image file of the plant leaf)
 - **Description**: Analyzes the image and returns the disease name, confidence score, and treatment advice.
 
+### 3. High-Accuracy Analysis (LLM Vision)
+- **Endpoint**: `POST /ai/analyze-image`
+- **Body (Multipart/Form-Data)**:
+  - `file`: (The image file)
+  - `prompt`: (Optional) Custom instructions for the AI.
+- **Description**: Uses vision-capable LLMs (GPT-4o, Gemini Pro) to provide a deep, natural language analysis of the image in Arabic. Great for complex cases.
+
 ---
 
 ## 🤖 LLM Management (New)
