@@ -1,68 +1,79 @@
-# AppiaPalan: AI-Powered Plant Disease Detection System
+# 🚀 AppiaPalan API Documentation | توثيق برمجية أبيا بالان
 
-A comprehensive ecosystem for farmers and agronomists to identify, manage, and treat crop diseases.
-
-## 🏗️ Project Structure
-- `/backend`: FastAPI core service (Postgres, JWT, RBAC).
-- `/ai_service`: Standalone Fast API service for AI inference (EfficientNet-B0).
-- `/dashboard`: Next.js web portal for agronomists and admins.
-- `/mobile_app`: Flutter application for farmers with camera/AI integration.
-
-## 🚀 Getting Started
-
-### 1. AI Inference Service
-Manages the Computer Vision logic.
-```bash
-cd ai_service
-pip install -r requirements.txt
-python main.py # Runs on http://localhost:8001
-```
-
-### 2. Backend API
-The central brain of the system.
-```bash
-cd backend
-py -m pip install -r requirements.txt
-# Ensure Postgres is running (Port 5432)
-py -m uvicorn app.main:app --reload
-```
-
-**Seed initial data & Create Admin:**
-```bash
-py seed_agri.py
-```
-- **Default Admin**: `admin@appiapalan.com`
-- **Default Password**: `adminpassword123`
-
-## 📚 Documentation
-For a complete guide on integrating this API with your mobile or web app, check the [**Integration Guide (DOCS.md)**](file:///c:/Users/amarn/Documents/appiapalan/DOCS.md).
-
-### 3. Admin Dashboard
-Web interface for content and disease management.
-```bash
-cd dashboard
-npm install
-npm run dev
-```
-
-### 4. Mobile App
-Farmer-facing interface.
-```bash
-cd mobile_app
-flutter pub get
-flutter run
-```
-
-## 🧠 AI Pipeline
-1. **Camera Capture**: Farmer takes a high-res photo of a leaf.
-2. **Preprocessing**: App resizes and center-crops the image to 224x224.
-3. **Inference**: Image sent to AI service -> Model predicts disease class.
-4. **Knowledge Retrieval**: Backend fetches symptoms and treatment (Organic/Chemical).
-5. **Farmer Advice**: Simple, localized instructions displayed to the user.
-
-## 💰 Monetization
-- **Free**: 3 scans/day.
-- **Premium**: Unlimited scans, expert chat, heatmaps.
+Welcome to the **AppiaPalan API**. This guide provided in both **English** and **Arabic** helps you connect your Mobile App or Website to our services.
+أهلاً بك في **برمجية أبيا بالان**. هذا الدليل متوفر باللغتين **الإنجليزية** و**العربية** لمساعدتك في ربط تطبيق الجوال أو الموقع الإلكتروني بخدماتنا.
 
 ---
-*Created by Antigravity (Advanced Agentic Coding)*
+
+## 📌 Base URL | الرابط الأساسي
+- **Production (الإنتاج)**: `https://appiapalanbackebd.onrender.com/api/v1`
+- **Development (التطوير)**: `http://localhost:8000/api/v1`
+
+---
+
+## 🔐 Authentication | التوثيق والأمان
+The API uses **OAuth2 with Password Grant**. | تستخدم البرمجية نظام **OAuth2** لتسجيل الدخول.
+
+### 1. Login (Get Token) | تسجيل الدخول (الحصول على الرمز)
+- **Endpoint**: `POST /auth/login/access-token`
+- **Body (Form Data)**:
+  - `username`: your-email
+  - `password`: your-password
+- **Response**:
+  ```json
+  {
+    "access_token": "eyJhbG...",
+    "token_type": "bearer"
+  }
+  ```
+
+### 2. Register User | تسجيل مستخدم جديد
+- **Endpoint**: `POST /auth/register`
+- **Body**: `email, password, full_name`
+
+---
+
+## 🍃 Agriculture & Diagnosis | الزراعة والتشخيص
+
+### 1. Predict Disease (AI) | تشخيص الأمراض (ذكاء اصطناعي)
+- **Endpoint**: `POST /agri/predict`
+- **Description**: Basic classification of plant diseases.
+- **الوصف**: تصنيف أساسي لأمراض النباتات.
+
+### 2. High-Accuracy Analysis (LLM Vision) | التحليل الدقيق (الرؤية بالذكاء الاصطناعي)
+- **Endpoint**: `POST /ai/analyze-image`
+- **Description**: Deep, natural language analysis using GPT-4o or Gemini.
+- **الوصف**: تحليل عميق ومفصل باستخدام لغة طبيعية عبر موديلات متطورة.
+
+---
+
+## 🤖 AI & LLM Management | إدارة الذكاء الاصطناعي
+Manage your API keys and models. | إدارة مفاتيح الـ API والنماذج الخاصة بك.
+
+### 1. Configure Provider | إعداد المزود
+- **Endpoint**: `POST /ai/`
+- **Fields**: `name, provider_type (openai/google), api_key, model_id`
+
+---
+
+## � User Management | إدارة المستخدمين
+For administrators only. | مخصص للمسؤولين فقط.
+
+### 1. List & Update Users | عرض وتحديث المستخدمين
+- **Endpoint**: `GET /users/` | `PUT /users/{id}`
+- **Description**: Manage roles (Admin, Editor, User).
+- **الوصف**: إدارة الأدوار والصلاحيات.
+
+---
+
+## 💡 Integration Tips | نصائح للربط البرمجي
+
+1. **Headers**: Always include `Authorization: Bearer <token>`.
+   **العناوين**: يجب دائماً تضمين رمز الدخول في العنوان.
+2. **Swagger UI**: Access interactive docs at `/docs`.
+   **واجهة Swagger**: الوصول للتوثيق التفاعلي عبر المسار `/docs`.
+
+---
+
+## 🛠 Support | الدعم الفني
+Contact us at | تواصل معنا عبر: `support@appiapalan.com`
