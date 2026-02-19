@@ -28,8 +28,12 @@ The API uses **OAuth2 with Password Grant**. | تستخدم البرمجية ن�
   ```
 
 ### 2. Register User | تسجيل مستخدم جديد
-- **Endpoint**: `POST /auth/register`
-- **Body**: `email, password, full_name`
+- **Endpoint**: `POST /users/register`
+- **Body**: `email, password, full_name, phone_number, country`
+
+### 3. Social & Phone Login | تسجيل الدخول الاجتماعي وعبر الهاتف
+- **Google Login**: `POST /auth/login/google`
+- **Phone Login**: `POST /auth/login/phone`
 
 ---
 
@@ -47,22 +51,34 @@ The API uses **OAuth2 with Password Grant**. | تستخدم البرمجية ن�
 
 ---
 
+## 💳 Subscriptions & Payments | الاشتراكات والمدفوعات
+Manage your monetization and payment gateways. | إدارة 수익 والاشتراكات وبوابات الدفع.
+
+### 1. List Payment Gateways | عرض بوابات الدفع
+- **Endpoint**: `GET /payments/gateways`
+- **Description**: Returns active gateways (Stripe, PayPal, etc.)
+
+### 2. Set Preferred Currency | تحديد العملة المفضلة
+- **Endpoint**: `POST /payments/currency?currency=USD`
+
+---
+
 ## 🤖 AI & LLM Management | إدارة الذكاء الاصطناعي
 Manage your API keys and models. | إدارة مفاتيح الـ API والنماذج الخاصة بك.
 
-### 1. Configure Provider | إعداد المزود
+### 1. Configure Provider | إعدا المزود
 - **Endpoint**: `POST /ai/`
 - **Fields**: `name, provider_type (openai/google), api_key, model_id`
 
 ---
 
-## � User Management | إدارة المستخدمين
+## 👥 User Management | إدارة المستخدمين
 For administrators only. | مخصص للمسؤولين فقط.
 
 ### 1. List & Update Users | عرض وتحديث المستخدمين
 - **Endpoint**: `GET /users/` | `PUT /users/{id}`
-- **Description**: Manage roles (Admin, Editor, User).
-- **الوصف**: إدارة الأدوار والصلاحيات.
+- **Description**: Manage subscription tiers, countries, and roles.
+- **الوصف**: إدارة فئات الاشتراك والدول والأدوار.
 
 ---
 
