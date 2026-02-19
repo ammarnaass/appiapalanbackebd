@@ -15,16 +15,26 @@ class CRUDUser:
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
         db_obj = User(
             email=obj_in.email,
-            hashed_password=get_password_hash(obj_in.password),
+            hashed_password=get_password_hash(obj_in.password) if obj_in.password else None,
             full_name=obj_in.full_name,
+            phone_number=obj_in.phone_number,
+            google_id=obj_in.google_id,
+            country=obj_in.country,
             role=obj_in.role,
             is_active=obj_in.is_active,
             is_superuser=obj_in.is_superuser,
+            subscription_tier=obj_in.subscription_tier,
         )
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
+
+    def get_by_phone(self, db: Session, phone_number: str) -> Optional[User]:
+        return db.query(User).filter(User.phone_number == phone_number).first()
+
+    def get_by_google_id(self, db: Session, google_id: str) -> Optional[User]:
+        return db.query(User).filter(User.google_id == google_id).first()
 
     def update(
         self, db: Session, *, db_obj: User, obj_in: UserUpdate

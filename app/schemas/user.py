@@ -5,15 +5,20 @@ from uuid import UUID
 # Shared properties
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
+    phone_number: Optional[str] = None
+    full_name: Optional[str] = None
+    country: Optional[str] = None
     is_active: Optional[bool] = True
     is_superuser: bool = False
-    full_name: Optional[str] = None
     role: str = "user"
+    subscription_tier: str = "free"
+    subscription_expiry: Optional[str] = None
+    preferred_currency: str = "USD"
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):
-    email: EmailStr
-    password: str
+    password: Optional[str] = None
+    google_id: Optional[str] = None
 
 # Properties to receive via API on update
 class UserUpdate(UserBase):
@@ -31,4 +36,5 @@ class User(UserInDBBase):
 
 # Additional properties stored in DB
 class UserInDB(UserInDBBase):
-    hashed_password: str
+    hashed_password: Optional[str] = None
+    google_id: Optional[str] = None

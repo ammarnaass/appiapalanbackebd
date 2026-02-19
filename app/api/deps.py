@@ -55,3 +55,13 @@ def get_current_active_superuser(
             status_code=400, detail="The user doesn't have enough privileges"
         )
     return current_user
+
+def get_current_premium_user(
+    current_user: models.User = Depends(get_current_active_user),
+) -> models.User:
+    if current_user.subscription_tier != "premium":
+        raise HTTPException(
+            status_code=status.HTTP_402_PAYMENT_REQUIRED,
+            detail="Premium subscription required for this feature"
+        )
+    return current_user

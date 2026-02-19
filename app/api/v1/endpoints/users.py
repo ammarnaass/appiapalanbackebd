@@ -8,6 +8,24 @@ from app.api import deps
 
 router = APIRouter()
 
+@router.post("/register", response_model=schemas.user.User)
+def register_user(
+    *,
+    db: Session = Depends(deps.get_db),
+    user_in: schemas.user.UserCreate
+) -> Any:
+    """
+    Create new user.
+    """
+    user = crud.user.get_by_email(db, email=user_in.email)
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail="The user with this username already exists in the system.",
+        )
+    user = crud.user.create(db, obj_in=user_in)
+    return user
+
 @router.get("/", response_model=List[schemas.user.User])
 def read_users(
     db: Session = Depends(deps.get_db),

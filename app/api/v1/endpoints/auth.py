@@ -35,6 +35,61 @@ def login_access_token(
         "token_type": "bearer",
     }
 
+@router.post("/login/google", response_model=schemas.Token)
+def login_google(
+    db: Session = Depends(deps.get_db), google_token: str = "TBD" # Placeholder
+) -> Any:
+    """
+    Login via Google (Mock for now)
+    """
+    # Logic: Verify google_token with Google API, get google_id and email
+    google_id = "google_user_123" # Mock
+    email = "google@example.com" # Mock
+    
+    user = crud.user.get_by_google_id(db, google_id=google_id)
+    if not user:
+        # Create user if doesn't exist
+        user_in = schemas.UserCreate(
+            email=email,
+            google_id=google_id,
+            full_name="Google User",
+            is_active=True
+        )
+        user = crud.user.create(db, obj_in=user_in)
+    
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    return {
+        "access_token": security.create_access_token(
+            user.id, expires_delta=access_token_expires
+        ),
+        "token_type": "bearer",
+    }
+
+@router.post("/login/phone", response_model=schemas.Token)
+def login_phone(
+    db: Session = Depends(deps.get_db), phone_number: str = "TBD" # Placeholder
+) -> Any:
+    """
+    Login via Phone Number (Mock for now)
+    """
+    user = crud.user.get_by_phone(db, phone_number=phone_number)
+    if not user:
+        # Create user if doesn't exist
+        user_in = schemas.UserCreate(
+            phone_number=phone_number,
+            full_name="Phone User",
+            is_active=True
+        )
+        user = crud.user.create(db, obj_in=user_in)
+    
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    return {
+        "access_token": security.create_access_token(
+            user.id, expires_delta=access_token_expires
+        ),
+        "token_type": "bearer",
+    }
+
 @router.post("/test-token", response_model=schemas.User)
 def test_token(current_user: models.User = Depends(deps.get_current_user)) -> Any:
     """

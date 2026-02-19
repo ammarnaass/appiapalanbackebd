@@ -89,6 +89,18 @@ async def seed_system_data():
             is_published=True
         ))
 
+    # 3. Default Payment Gateways
+    gateways = [
+        {"name": "stripe", "display_name": "Stripe (Credit Card)", "config": {"test_mode": True}},
+        {"name": "paypal", "display_name": "PayPal", "config": {"sandbox": True}},
+        {"name": "local_transfer", "display_name": "Bank Transfer (Manual)", "config": {"account_info": "AppiaPalan Bank. AC: 123456789"}}
+    ]
+    
+    for g_data in gateways:
+        if not crud.payment.get_gateway_by_name(db, name=g_data["name"]):
+            print(f"Seeding payment gateway: {g_data['display_name']}...")
+            crud.payment.create_gateway(db, obj_in=schemas.payment.PaymentGatewayCreate(**g_data))
+
     print("System data seeding completed successfully.")
     db.close()
 
