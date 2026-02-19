@@ -1,17 +1,20 @@
-# 🚀 AppiaPalan API Documentation & Integration Guide
+# 🚀 AppiaPalan API Documentation | توثيق برمجية أبيا بالان
 
-Welcome to the **AppiaPalan API**. This guide provides everything you need to connect your Mobile App or Website to our backend services, including user management, disease diagnosis, content management, and the new LLM (Large Language Model) integration.
-
-## 📌 Base URL
-- **Production**: `https://appiapalanbackebd.onrender.com/api/v1`
-- **Development**: `http://localhost:8000/api/v1`
+Welcome to the **AppiaPalan API**. This guide provided in both **English** and **Arabic** helps you connect your Mobile App or Website to our services.
+أهلاً بك في **برمجية أبيا بالان**. هذا الدليل متوفر باللغتين **الإنجليزية** و**العربية** لمساعدتك في ربط تطبيق الجوال أو الموقع الإلكتروني بخدماتنا.
 
 ---
 
-## 🔐 Authentication
-The API uses **OAuth2 with Password Grant** and **JWT Tokens**.
+## 📌 Base URL | الرابط الأساسي
+- **Production (الإنتاج)**: `https://appiapalanbackebd.onrender.com/api/v1`
+- **Development (التطوير)**: `http://localhost:8000/api/v1`
 
-### 1. Login (Get Token)
+---
+
+## 🔐 Authentication | التوثيق والأمان
+The API uses **OAuth2 with Password Grant**. | تستخدم البرمجية نظام **OAuth2** لتسجيل الدخول.
+
+### 1. Login (Get Token) | تسجيل الدخول (الحصول على الرمز)
 - **Endpoint**: `POST /auth/login/access-token`
 - **Body (Form Data)**:
   - `username`: your-email
@@ -23,107 +26,54 @@ The API uses **OAuth2 with Password Grant** and **JWT Tokens**.
     "token_type": "bearer"
   }
   ```
-- **Usage**: Include this token in the header of all protected requests:
-  `Authorization: Bearer <your_token>`
 
-### 2. Register User
+### 2. Register User | تسجيل مستخدم جديد
 - **Endpoint**: `POST /auth/register`
-- **Body (JSON)**:
-  ```json
-  {
-    "email": "user@example.com",
-    "password": "securepassword",
-    "full_name": "John Doe"
-  }
-  ```
+- **Body**: `email, password, full_name`
 
 ---
 
-## 👥 User Management (Admin Only)
-Endpoints for administrators to manage users and roles.
+## 🍃 Agriculture & Diagnosis | الزراعة والتشخيص
 
-### 1. List All Users
-- **Endpoint**: `GET /users/`
-- **Description**: Returns a list of all registered users.
-
-### 2. Update User (Role/Status)
-- **Endpoint**: `PUT /users/{user_id}`
-- **Body (JSON)**:
-  ```json
-  {
-    "role": "editor",
-    "is_active": true
-  }
-  ```
-
-### 3. Delete User
-- **Endpoint**: `DELETE /users/{user_id}`
-
----
-
-## 🍃 Agriculture & Diagnosis
-### 1. List Plants
-- **Endpoint**: `GET /agri/plants`
-- **Description**: Returns all supported plants (Tomato, Potato, etc.).
-
-### 2. Predict Disease (AI Diagnosis)
+### 1. Predict Disease (AI) | تشخيص الأمراض (ذكاء اصطناعي)
 - **Endpoint**: `POST /agri/predict`
-- **Body (Multipart/Form-Data)**:
-  - `file`: (The image file of the plant leaf)
-- **Description**: Analyzes the image and returns the disease name, confidence score, and treatment advice.
+- **Description**: Basic classification of plant diseases.
+- **الوصف**: تصنيف أساسي لأمراض النباتات.
 
-### 3. High-Accuracy Analysis (LLM Vision)
+### 2. High-Accuracy Analysis (LLM Vision) | التحليل الدقيق (الرؤية بالذكاء الاصطناعي)
 - **Endpoint**: `POST /ai/analyze-image`
-- **Body (Multipart/Form-Data)**:
-  - `file`: (The image file)
-  - `prompt`: (Optional) Custom instructions for the AI.
-- **Description**: Uses vision-capable LLMs (GPT-4o, Gemini Pro) to provide a deep, natural language analysis of the image in Arabic. Great for complex cases.
+- **Description**: Deep, natural language analysis using GPT-4o or Gemini.
+- **الوصف**: تحليل عميق ومفصل باستخدام لغة طبيعية عبر موديلات متطورة.
 
 ---
 
-## 🤖 LLM Management (New)
-Manage multiple AI models and API keys directly from the backend.
+## 🤖 AI & LLM Management | إدارة الذكاء الاصطناعي
+Manage your API keys and models. | إدارة مفاتيح الـ API والنماذج الخاصة بك.
 
-### 1. List LLM Providers
-- **Endpoint**: `GET /ai/` (Superuser only)
-- **Description**: Returns all configured AI models (OpenAI, Gemini, etc.).
-
-### 2. Create LLM Configuration
+### 1. Configure Provider | إعداد المزود
 - **Endpoint**: `POST /ai/`
-- **Body (JSON)**:
-  ```json
-  {
-    "name": "My ChatGPT-4",
-    "provider_type": "openai",
-    "api_key": "sk-...",
-    "model_id": "gpt-4"
-  }
-  ```
+- **Fields**: `name, provider_type (openai/google), api_key, model_id`
 
 ---
 
-## 📦 Content Management (CMS)
-Dynamic content for your app (Articles, Feature Flags, etc.).
+## � User Management | إدارة المستخدمين
+For administrators only. | مخصص للمسؤولين فقط.
 
-### 1. Get Content by Type
-- **Endpoint**: `GET /content/type/{type_key}`
-- **Example**: `GET /content/type/monetization_settings`
-
----
-
-## 💡 Integration Tips
-### 1. Connecting Flutter/React
-- Use a persistent HTTP client (like `dio` in Flutter or `axios` in React).
-- Create a base service that automatically attaches the `Bearer` token from local storage.
-- **Handling JSON Schemas**: The CMS endpoints return dynamic JSON. In your app, use a flexible Map or dynamic object to parse the `data` field.
-
-### 2. Automatic Admin Credentials
-- **Admin**: `admin`
-- **Password**: `admin`
-*(Created automatically via `seed_system.py` on deployment).*
+### 1. List & Update Users | عرض وتحديث المستخدمين
+- **Endpoint**: `GET /users/` | `PUT /users/{id}`
+- **Description**: Manage roles (Admin, Editor, User).
+- **الوصف**: إدارة الأدوار والصلاحيات.
 
 ---
 
-## 🛠 Troubleshooting
-- **Docs**: Access the interactive Swagger UI at `/docs` (e.g., `https://appiapalanbackebd.onrender.com/docs`).
-- **Issues**: Contact `support@appiapalan.com`.
+## 💡 Integration Tips | نصائح للربط البرمجي
+
+1. **Headers**: Always include `Authorization: Bearer <token>`.
+   **العناوين**: يجب دائماً تضمين رمز الدخول في العنوان.
+2. **Swagger UI**: Access interactive docs at `/docs`.
+   **واجهة Swagger**: الوصول للتوثيق التفاعلي عبر المسار `/docs`.
+
+---
+
+## 🛠 Support | الدعم الفني
+Contact us at | تواصل معنا عبر: `support@appiapalan.com`
