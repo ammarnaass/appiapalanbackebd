@@ -7,6 +7,19 @@ async def seed_system_data():
     
     print("Seeding system and monetization data...")
     
+    # 0. Requested Admin User (admin / admin)
+    special_admin = "admin"
+    if not crud.user.get_by_email(db, email=special_admin):
+        print(f"Creating requested admin user: {special_admin}...")
+        crud.user.create(db, obj_in=schemas.user.UserCreate(
+            email=special_admin,
+            password="admin",
+            full_name="Super Admin",
+            role="super_admin",
+            is_active=True,
+            is_superuser=True
+        ))
+    
     # 1. Monetization System
     monetization_key = "monetization_settings"
     m_type = crud.content_type.get_by_key(db, key=monetization_key)
