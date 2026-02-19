@@ -19,7 +19,7 @@ def read_ai_providers(
     """
     Retrieve AI providers. (Superuser only)
     """
-    providers = crud.crud_ai.ai_provider.get_multi(db, skip=skip, limit=limit)
+    providers = crud.ai_provider.get_multi(db, skip=skip, limit=limit)
     return providers
 
 @router.post("/", response_model=schemas.ai.AIProvider)
@@ -32,7 +32,7 @@ def create_ai_provider(
     """
     Create new AI provider. (Superuser only)
     """
-    provider = crud.crud_ai.ai_provider.create(db, obj_in=obj_in)
+    provider = crud.ai_provider.create(db, obj_in=obj_in)
     return provider
 
 @router.put("/{id}", response_model=schemas.ai.AIProvider)
@@ -46,10 +46,10 @@ def update_ai_provider(
     """
     Update an AI provider. (Superuser only)
     """
-    provider = crud.crud_ai.ai_provider.get(db, id=id)
+    provider = crud.ai_provider.get(db, id=id)
     if not provider:
         raise HTTPException(status_code=404, detail="AI provider not found")
-    provider = crud.crud_ai.ai_provider.update(db, db_obj=provider, obj_in=obj_in)
+    provider = crud.ai_provider.update(db, db_obj=provider, obj_in=obj_in)
     return provider
 
 @router.delete("/{id}", response_model=schemas.ai.AIProvider)
@@ -62,10 +62,10 @@ def delete_ai_provider(
     """
     Delete an AI provider. (Superuser only)
     """
-    provider = crud.crud_ai.ai_provider.get(db, id=id)
+    provider = crud.ai_provider.get(db, id=id)
     if not provider:
         raise HTTPException(status_code=404, detail="AI provider not found")
-    provider = crud.crud_ai.ai_provider.remove(db, id=id)
+    provider = crud.ai_provider.remove(db, id=id)
     return provider
 
 @router.post("/analyze-image")
@@ -81,7 +81,7 @@ async def analyze_plant_image(
     This provides a more detailed and natural language analysis than the basic classifier.
     """
     # 1. Get Active Provider
-    provider = crud.crud_ai.ai_provider.get_active(db)
+    provider = crud.ai_provider.get_active(db)
     if not provider:
         raise HTTPException(
             status_code=404, 
