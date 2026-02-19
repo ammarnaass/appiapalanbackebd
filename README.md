@@ -34,6 +34,9 @@ py seed_agri.py
 - **Default Admin**: `admin@appiapalan.com`
 - **Default Password**: `adminpassword123`
 
+## 📚 Documentation
+For a complete guide on integrating this API with your mobile or web app, check the [**Integration Guide (DOCS.md)**](file:///c:/Users/amarn/Documents/appiapalan/DOCS.md).
+
 ### 3. Admin Dashboard
 Web interface for content and disease management.
 ```bash
