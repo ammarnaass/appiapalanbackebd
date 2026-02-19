@@ -4,7 +4,6 @@ import uuid
 from app.db.base_class import Base
 
 class Plant(Base):
-    __tablename__ = "plants"
     id = Column(Integer, primary_key=True, index=True)
     name_ar = Column(String(100), nullable=False)
     name_en = Column(String(100), nullable=False)
@@ -13,9 +12,8 @@ class Plant(Base):
     diseases = relationship("Disease", back_populates="plant")
 
 class Disease(Base):
-    __tablename__ = "diseases"
     id = Column(Integer, primary_key=True, index=True)
-    plant_id = Column(Integer, ForeignKey("plants.id"))
+    plant_id = Column(Integer, ForeignKey("plant.id")) # Changed to 'plant.id' to match automatic tablename
     name_ar = Column(String(255), nullable=False)
     name_en = Column(String(255), nullable=False)
     description_ar = Column(Text)
@@ -29,13 +27,11 @@ class Disease(Base):
     plant = relationship("Plant", back_populates="diseases")
 
 class PredictionLog(Base):
-    __tablename__ = "prediction_logs"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("user.id"), nullable=True)
     image_url = Column(Text, nullable=False)
     predicted_class = Column(String(100), nullable=False)
     confidence = Column(Float, nullable=False)
     user_feedback = Column(Boolean, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=text("now()"))
 
     user = relationship("User")

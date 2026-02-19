@@ -17,7 +17,6 @@ class Content(Base):
     data = Column(JSONB, nullable=False)
     is_published = Column(Boolean(), default=False)
     published_at = Column(DateTime(timezone=True))
-    created_at = Column(DateTime(timezone=True), server_default=text("now()"))
     created_by = Column(UUID(as_uuid=True), ForeignKey("user.id"))
     
     # Relationships could be added here if needed, e.g., author

@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: appiapalan-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    envVars:
+      - key: SQLALCHEMY_DATABASE_URI
+        value: postgresql+psycopg://postgres.rvryeemkklhsgiywxmze:awCMSeYX6EkZNNDE@aws-1-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require
+      - key: POSTGRES_URL
+        value: postgresql+psycopg://postgres.rvryeemkklhsgiywxmze:awCMSeYX6EkZNNDE@aws-1-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require
+      - key: DATABASE_URL
+        value: postgresql+psycopg://postgres.rvryeemkklhsgiywxmze:awCMSeYX6EkZNNDE@aws-1-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require
+      - key: SECRET_KEY
+        generateValue: true
+      - key: SUPABASE_URL
+        value: https://rvryeemkklhsgiywxmze.supabase.co
+      - key: SUPABASE_ANON_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2cnllZW1ra2xoc2dpeXd4bXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMTU4ODIsImV4cCI6MjA4MjU5MTg4Mn0.DSYI3yzB8flm07bJuqq1mlyjj5Q1sxE_KXnDTsaGBI0
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2cnllZW1ra2xoc2dpeXd4bXplIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzAxNTg4MiwiZXhwIjoyMDgyNTkxODgyfQ.9UKjEXDHGxbSTcHj8mjn5JP813Nfl_eduG9U1AKOsPc
+      - key: SUPABASE_JWT_SECRET
+        value: 0R3ZEWgW0oqE0UFivcW0i/jC7llnjT+gRlBn9nQDH14atfBZfcMB1LcIzzri+fGVJWFfrl4/TiWPkua8LOvX4Q==
+      - key: AI_SERVICE_URL
+        value: http://localhost:8001/v1/predict
