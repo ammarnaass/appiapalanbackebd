@@ -2,8 +2,8 @@ services:
   - type: web
     name: appiapalan-backend
     env: python
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: cd backend && python seed_system.py && gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    buildCommand: pip install -r requirements.txt
+    startCommand: python seed_system.py && gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
     envVars:
       - key: SQLALCHEMY_DATABASE_URI
         value: postgresql+psycopg://postgres.rjpkyzbvmsooidkckriq:FM1oxFIVN9Up0NZy@aws-1-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require
