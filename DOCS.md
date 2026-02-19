@@ -39,6 +39,28 @@ The API uses **OAuth2 with Password Grant** and **JWT Tokens**.
 
 ---
 
+## 👥 User Management (Admin Only)
+Endpoints for administrators to manage users and roles.
+
+### 1. List All Users
+- **Endpoint**: `GET /users/`
+- **Description**: Returns a list of all registered users.
+
+### 2. Update User (Role/Status)
+- **Endpoint**: `PUT /users/{user_id}`
+- **Body (JSON)**:
+  ```json
+  {
+    "role": "editor",
+    "is_active": true
+  }
+  ```
+
+### 3. Delete User
+- **Endpoint**: `DELETE /users/{user_id}`
+
+---
+
 ## 🍃 Agriculture & Diagnosis
 ### 1. List Plants
 - **Endpoint**: `GET /agri/plants`
